@@ -2,8 +2,8 @@
   "name": "todolist",
   "private": true,
   "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "preview": "vite preview"
+    "db:up": "docker compose -f deploy/docker-compose.dev.yml --env-file .env up -d",
+    "db:down": "docker compose -f deploy/docker-compose.dev.yml --env-file .env down",
+    "db:logs": "docker compose -f deploy/docker-compose.dev.yml logs -f mysql"
   }
 }
