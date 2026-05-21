@@ -41,5 +41,5 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: 22
           script: |
-            cd /var/www/todolist
-            pm2 restart all
+            cd /var/www/todolist 
+            pm2 restart all      
