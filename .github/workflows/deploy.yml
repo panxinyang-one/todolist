@@ -1,4 +1,4 @@
-name: 自动部署
+name: 自动部署（仅前端）
 
 on:
   push:
@@ -6,24 +6,24 @@ on:
       - main
 
 jobs:
-  build-and-deploy:
+  deploy:
     runs-on: ubuntu-latest
-
     steps:
       - name: 拉取代码
         uses: actions/checkout@v4
 
-      - name: 设置Node
+      - name: 设置Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 20
 
-      - name: 安装依赖 + 打包
-        run: |
-          npm install
-          npm run build
+      - name: 安装所有依赖
+        run: npm ci
 
-      - name: 上传到服务器
+      - name: 打包前端项目
+        run: npx vite build
+
+      - name: 上传dist目录到服务器
         uses: appleboy/scp-action@master
         with:
           host: ${{ secrets.SSH_HOST }}
@@ -31,9 +31,9 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: 22
           source: "./dist"
-          target: "/var/www/todolist"
+          target: "/var/www/todolist/dist"
 
-      - name: 重启服务
+      - name: 重启Nginx
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.SSH_HOST }}
@@ -41,5 +41,4 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: 22
           script: |
-            cd /var/www/todolist 
-            pm2 restart all      
+            nginx -s reload
