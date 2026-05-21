@@ -15,8 +15,12 @@ npm ci
 npm run build
 cd ..
 
-echo "==> Rebuild and start containers"
-docker compose -f "$COMPOSE_FILE" --env-file .env up -d --build
+echo "==> Build server"
+cd server && npm ci && npm run build && cd ..
+
+echo "==> Restart API with PM2"
+pm2 startOrReload deploy/ecosystem.config.cjs --update-env
+pm2 save
 
 echo "==> Deployment finished"
-docker compose -f "$COMPOSE_FILE" ps
+pm2 status
