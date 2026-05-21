@@ -68,9 +68,9 @@ function cancelEdit() {
 
     <div v-if="!editing" class="actions">
       <button type="button" class="btn-sm ghost" title="双击标题也可编辑" @click="startEdit">
-        编辑
+        点击编辑
       </button>
-      <button type="button" class="btn-sm danger" @click="emit('remove', todo.id)">删除</button>
+      <button type="button" class="btn-sm danger" @click="emit('remove', todo.id)">点击删除</button>
     </div>
   </li>
 </template>
