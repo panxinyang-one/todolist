@@ -29,7 +29,7 @@ app.use(express.json());
 app.get('/api/health', async (_req, res) => {
   try {
     await pool.query('SELECT 1');
-    res.json({ status: 'ok', database: 'connected' });
+    res.json({ status: 'ok', database: 'connected', version: 'backend-test-1' });
   } catch (err) {
     console.error(err);
     res.status(503).json({ status: 'error', database: 'disconnected' });
